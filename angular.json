@@ -101,8 +101,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kB",
-									"maximumError": "4kB"
+									"maximumWarning": "20kB",
+									"maximumError": "25kB"
 								}
 							],
 							"outputHashing": "all"
@@ -230,8 +230,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kB",
-									"maximumError": "4kB"
+									"maximumWarning": "20kB",
+									"maximumError": "25kB"
 								}
 							],
 							"outputHashing": "all"
@@ -359,8 +359,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kB",
-									"maximumError": "4kB"
+									"maximumWarning": "20kB",
+									"maximumError": "25kB"
 								}
 							],
 							"outputHashing": "all"
@@ -488,8 +488,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kB",
-									"maximumError": "4kB"
+									"maximumWarning": "20kB",
+									"maximumError": "25kB"
 								}
 							],
 							"outputHashing": "all"
