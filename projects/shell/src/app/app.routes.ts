@@ -2,6 +2,7 @@ import { Routes, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -312,9 +313,9 @@ class ModuleFrameComponent {
       this.currentModule = module || 'agenda';
       
       const urls: { [key: string]: string } = {
-        'agenda': 'http://localhost:4201',
-        'financeiro': 'http://localhost:4202',
-        'clientes': 'http://localhost:4203'
+        'agenda': environment.microfrontends.agenda.url,
+        'financeiro': environment.microfrontends.financeiro.url,
+        'clientes': environment.microfrontends.clientes.url
       };
       
       this.moduleUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urls[module!] || urls['agenda']);
