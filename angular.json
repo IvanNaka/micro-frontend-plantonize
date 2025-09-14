@@ -89,7 +89,8 @@
 						"prerender": false,
 						"ssr": {
 							"entry": "projects/shell/server.ts"
-						}
+						},
+						"allowedCommonJsDependencies": ["cors"]
 					},
 					"configurations": {
 						"production": {
@@ -218,7 +219,8 @@
 						"prerender": false,
 						"ssr": {
 							"entry": "projects/agenda/server.ts"
-						}
+						},
+						"allowedCommonJsDependencies": ["cors"]
 					},
 					"configurations": {
 						"production": {
@@ -347,7 +349,8 @@
 						"prerender": false,
 						"ssr": {
 							"entry": "projects/financeiro/server.ts"
-						}
+						},
+						"allowedCommonJsDependencies": ["cors"]
 					},
 					"configurations": {
 						"production": {
@@ -476,7 +479,8 @@
 						"prerender": false,
 						"ssr": {
 							"entry": "projects/clientes/server.ts"
-						}
+						},
+						"allowedCommonJsDependencies": ["cors"]
 					},
 					"configurations": {
 						"production": {
