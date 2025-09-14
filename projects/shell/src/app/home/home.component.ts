@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
             <p class="text-gray-600 mb-4">
               Gerencie seus plantões e consultas médicas
             </p>
-            <a href="http://localhost:4201" target="_blank" 
+            <a href="https://master.d38x975wk8l8lt.amplifyapp.com" target="_blank" 
                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
               Acessar Agenda
             </a>
@@ -40,7 +40,7 @@ import { CommonModule } from '@angular/common';
             <p class="text-gray-600 mb-4">
               Controle suas finanças e faturamento
             </p>
-            <a href="http://localhost:4202" target="_blank"
+            <a href="https://master.d3a2j644iqswfl.amplifyapp.com" target="_blank"
                class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
               Acessar Financeiro
             </a>
@@ -55,7 +55,7 @@ import { CommonModule } from '@angular/common';
             <p class="text-gray-600 mb-4">
               Gerencie seus pacientes e clientes
             </p>
-            <a href="http://localhost:4203" target="_blank"
+            <a href="https://master.d15fxxqhaij1k9.amplifyapp.com" target="_blank"
                class="inline-block bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
               Acessar Clientes
             </a>

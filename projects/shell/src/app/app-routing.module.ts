@@ -9,7 +9,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
+        remoteEntry: 'https://master.d38x975wk8l8lt.amplifyapp.com/remoteEntry.js',
         exposedModule: './Module',
       }).then((m) => m.AgendaModule), // O nome do módulo exportado
   },
@@ -18,7 +18,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4202/remoteEntry.js',
+        remoteEntry: 'https://master.d3a2j644iqswfl.amplifyapp.com/remoteEntry.js',
         exposedModule: './Module',
       }).then((m) => m.FinanceiroModule),
   },
@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4203/remoteEntry.js',
+        remoteEntry: 'https://master.d15fxxqhaij1k9.amplifyapp.com/remoteEntry.js',
         exposedModule: './Module',
       }).then((m) => m.ClientesModule),
   },
