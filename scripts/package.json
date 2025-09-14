@@ -1,0 +1,11 @@
+{
+  "name": "update-microfrontend-urls",
+  "version": "1.0.0",
+  "description": "Script para atualizar URLs dos microfrontends",
+  "main": "update-urls.js",
+  "scripts": {
+    "update:urls": "node update-urls.js",
+    "update:dev": "node update-urls.js development",
+    "update:prod": "node update-urls.js production"
+  }
+}
