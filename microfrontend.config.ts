@@ -28,19 +28,19 @@ export const MICROFRONTEND_CONFIG = {
   
   production: {
     shell: {
-      url: 'https://shell.plantonize.com',
+      url: 'https://master.d2kuxr0jk1zwy.amplifyapp.com/',
       port: 443
     },
     agenda: {
-      url: 'https://agenda.plantonize.com',
+      url: 'https://master.d38x975wk8l8lt.amplifyapp.com/agenda',
       port: 443
     },
     financeiro: {
-      url: 'https://financeiro.plantonize.com',
+      url: 'https://master.d3a2j644iqswfl.amplifyapp.com',
       port: 443
     },
     clientes: {
-      url: 'https://clientes.plantonize.com',
+      url: 'https://master.d15fxxqhaij1k9.amplifyapp.com',
       port: 443
     }
   },
