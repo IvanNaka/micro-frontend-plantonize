@@ -1,0 +1,133 @@
+<div class="space-y-6">
+      <!-- Header Section -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Agenda de Plantões</h2>
+          <p class="text-gray-600 mt-1">Gerencie seus atendimentos e plantões médicos</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+            Total: {{ appointments.length }} plantões
+          </span>
+          <button class="btn btn-primary">
+            + Novo Plantão
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+        <span class="ml-3 text-gray-600">Carregando plantões...</span>
+      </div>
+
+      <!-- Stats Cards -->
+      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-success-100">
+              <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Confirmados</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getStatusCount('confirmado') }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-warning-100">
+              <svg class="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Pendentes</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getStatusCount('pendente') }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-primary-100">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Valor Total</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getTotalValue() | currency:'BRL':'symbol':'1.2-2':'pt' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments List -->
+      <div *ngIf="!loading" class="space-y-4">
+        <div *ngFor="let appointment of appointments" class="card p-6 hover:shadow-lg transition-shadow duration-200">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <div class="flex items-center space-x-3 mb-3">
+                <h3 class="text-lg font-semibold text-gray-900">{{ appointment.hospital }}</h3>
+                <span [class]="getStatusClass(appointment.status)" class="status-badge">
+                  {{ getStatusLabel(appointment.status) }}
+                </span>
+              </div>
+              
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <p class="text-gray-500">Data</p>
+                  <p class="font-medium text-gray-900">{{ formatDate(appointment.date) }}</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Horário</p>
+                  <p class="font-medium text-gray-900">{{ appointment.time }}</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Especialidade</p>
+                  <p class="font-medium text-gray-900">{{ appointment.specialty }}</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Valor</p>
+                  <p class="font-medium text-gray-900">{{ appointment.value | currency:'BRL':'symbol':'1.2-2':'pt' }}</p>
+                </div>
+              </div>
+              
+              <div *ngIf="appointment.notes" class="mt-3">
+                <p class="text-gray-500 text-sm">Observações</p>
+                <p class="text-gray-700 text-sm">{{ appointment.notes }}</p>
+              </div>
+            </div>
+            
+            <div class="flex flex-col space-y-2 ml-6">
+              <button *ngIf="appointment.status === 'pendente'" 
+                      class="btn btn-success text-xs px-3 py-1"
+                      (click)="updateStatus(appointment.id, 'confirmado')">
+                Confirmar
+              </button>
+              <button *ngIf="appointment.status !== 'cancelado'" 
+                      class="btn btn-danger text-xs px-3 py-1"
+                      (click)="updateStatus(appointment.id, 'cancelado')">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && appointments.length === 0" class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4v6a2 2 0 002 2h4a2 2 0 002-2v-6M8 7h8"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum plantão encontrado</h3>
+        <p class="mt-1 text-sm text-gray-500">Comece criando seu primeiro plantão</p>
+        <div class="mt-6">
+          <button class="btn btn-primary">+ Adicionar Plantão</button>
+        </div>
+      </div>
+    </div>

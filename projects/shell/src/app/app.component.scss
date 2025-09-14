@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-600;
+  }
+  
+  .btn-success {
+    @apply bg-success-500 text-white hover:bg-success-600;
+  }
+  
+  .btn-warning {
+    @apply bg-warning-500 text-white hover:bg-warning-600;
+  }
+  
+  .btn-danger {
+    @apply bg-danger-500 text-white hover:bg-danger-600;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md border border-gray-200;
+  }
+  
+  .nav-link {
+    @apply px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
+  }
+  
+  .nav-link-active {
+    @apply bg-primary-100 text-primary-700 border-primary-300;
+  }
+  
+  .nav-link-inactive {
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100;
+  }
+}

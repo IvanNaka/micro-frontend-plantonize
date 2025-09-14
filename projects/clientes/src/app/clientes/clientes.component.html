@@ -1,0 +1,235 @@
+<div class="space-y-6">
+      <!-- Header Section -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Gestão de Clientes</h2>
+          <p class="text-gray-600 mt-1">Gerencie seus pacientes e informações médicas</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+            Total: {{ clients.length }} clientes
+          </span>
+          <button class="btn btn-primary">
+            + Novo Cliente
+          </button>
+        </div>
+      </div>
+
+      <!-- Search and Filter -->
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex-1">
+          <input type="text" 
+                 placeholder="Buscar cliente por nome, CPF ou telefone..." 
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div class="flex gap-2">
+          <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            <option value="">Todos os planos</option>
+            <option value="particular">Particular</option>
+            <option value="convenio">Convênio</option>
+            <option value="sus">SUS</option>
+          </select>
+          <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            <option value="">Filtrar por status</option>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+        <span class="ml-3 text-gray-600">Carregando clientes...</span>
+      </div>
+
+      <!-- Stats Cards -->
+      <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Total Clientes</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getClientsCount() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Ativos</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getActiveClientsCount() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Consultas Hoje</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getTodayAppointments() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-500">Novos Este Mês</p>
+              <p class="text-2xl font-semibold text-gray-900">{{ getNewClientsThisMonth() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clients List -->
+      <div *ngIf="!loading" class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Lista de Clientes</h3>
+          
+          <!-- Table Header -->
+          <div class="hidden md:grid grid-cols-6 gap-4 text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 pb-3">
+            <div>Nome</div>
+            <div>CPF</div>
+            <div>Telefone</div>
+            <div>Plano</div>
+            <div>Última Consulta</div>
+            <div>Ações</div>
+          </div>
+
+          <!-- Client Rows -->
+          <div class="divide-y divide-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 py-4 items-center hover:bg-gray-50">
+              <div class="md:col-span-1">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    MJ
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Maria José Silva</p>
+                    <p class="text-sm text-gray-500 md:hidden">CPF: 123.456.789-00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">123.456.789-00</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-900">(11) 99999-8888</p>
+              </div>
+              <div>
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                  Convênio
+                </span>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">15/08/2024</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="text-blue-600 hover:text-blue-800 text-sm">Editar</button>
+                <button class="text-green-600 hover:text-green-800 text-sm">Consulta</button>
+                <button class="text-red-600 hover:text-red-800 text-sm">Excluir</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 py-4 items-center hover:bg-gray-50">
+              <div class="md:col-span-1">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    JS
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">João Santos</p>
+                    <p class="text-sm text-gray-500 md:hidden">CPF: 987.654.321-00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">987.654.321-00</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-900">(11) 88888-7777</p>
+              </div>
+              <div>
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  Particular
+                </span>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">20/08/2024</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="text-blue-600 hover:text-blue-800 text-sm">Editar</button>
+                <button class="text-green-600 hover:text-green-800 text-sm">Consulta</button>
+                <button class="text-red-600 hover:text-red-800 text-sm">Excluir</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 py-4 items-center hover:bg-gray-50">
+              <div class="md:col-span-1">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                    AL
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Ana Lima</p>
+                    <p class="text-sm text-gray-500 md:hidden">CPF: 456.789.123-00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">456.789.123-00</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-900">(11) 77777-6666</p>
+              </div>
+              <div>
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                  SUS
+                </span>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm text-gray-900">10/09/2024</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="text-blue-600 hover:text-blue-800 text-sm">Editar</button>
+                <button class="text-green-600 hover:text-green-800 text-sm">Consulta</button>
+                <button class="text-red-600 hover:text-red-800 text-sm">Excluir</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading && clients.length === 0" class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhum cliente encontrado</h3>
+        <p class="mt-1 text-sm text-gray-500">Comece adicionando seu primeiro cliente</p>
+        <div class="mt-6">
+          <button class="btn btn-primary">+ Adicionar Cliente</button>
+        </div>
+      </div>
+    </div>
