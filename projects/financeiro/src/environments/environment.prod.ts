@@ -2,26 +2,24 @@ export const environment = {
   production: true,
   microfrontends: {
     shell: {
-      url: 'https://shell.plantonize.com',
-      port: 443
+      url: 'https://master.d2kuxr0jk1zwy.amplifyapp.com/',
+      // url: 'http://localhost:4200/',
+      port: 4200
     },
     agenda: {
-      url: 'https://agenda.plantonize.com',
-      port: 443
+      url: 'https://master.d38x975wk8l8lt.amplifyapp.com',
+      // url: 'http://localhost:4201/',
+      port: 4201
     },
     financeiro: {
-      url: 'https://financeiro.plantonize.com',
-      port: 443
+      url: 'https://master.d3a2j644iqswfl.amplifyapp.com',
+      // url: 'http://localhost:4202/',
+      port: 4202
     },
   },
   api: {
-    baseUrl: 'https://api.plantonize.com/api',
-    timeout: 30000,
-    endpoints: {
-      invoices: '/invoices',
-      payments: '/payments',
-      reports: '/reports',
-      transactions: '/transactions'
-    }
+    // baseUrl: 'http://localhost:3000/api',
+    baseUrl: 'plantonize-bff-d4e4bvawhyf3a2bg.brazilsouth-01.azurewebsites.net/api',
+    timeout: 30000
   }
 };
