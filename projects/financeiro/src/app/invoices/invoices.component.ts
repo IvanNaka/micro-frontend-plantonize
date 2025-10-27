@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoicesService } from './invoices.service';
 import { Invoice } from './invoice.interface';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-invoices',
@@ -16,10 +17,132 @@ import { Invoice } from './invoice.interface';
           <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
             Total: {{ invoices.length }} notas fiscais
           </span>
-          <button class="btn btn-primary">
+          <button class="btn btn-primary" (click)="openForm()">
             + Nova Nota Fiscal
           </button>
         </div>
+      </div>
+
+      <!-- Create Invoice Form -->
+      <div *ngIf="showForm" class="card p-6 bg-white border">
+        <form [formGroup]="invoiceForm" (ngSubmit)="createInvoice()" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm text-gray-600">Número da Nota</label>
+              <input class="input" [ngClass]="{'input-invalid': getControl('numeroNota')?.invalid && (getControl('numeroNota')?.touched || getControl('numeroNota')?.dirty)}" formControlName="numeroNota" />
+              <div *ngIf="getControl('numeroNota')?.invalid && (getControl('numeroNota')?.touched || getControl('numeroNota')?.dirty)" class="error-text">Número da nota é obrigatório.</div>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600">Data de Emissão</label>
+              <input class="input" [ngClass]="{'input-invalid': getControl('dataEmissao')?.invalid && (getControl('dataEmissao')?.touched || getControl('dataEmissao')?.dirty)}" type="datetime-local" formControlName="dataEmissao" />
+              <div *ngIf="getControl('dataEmissao')?.invalid && (getControl('dataEmissao')?.touched || getControl('dataEmissao')?.dirty)" class="error-text">Data de emissão é obrigatória.</div>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600">Valor Total</label>
+              <input class="input" [ngClass]="{'input-invalid': getControl('valorTotal')?.invalid && (getControl('valorTotal')?.touched || getControl('valorTotal')?.dirty)}" type="number" formControlName="valorTotal" />
+              <div *ngIf="getControl('valorTotal')?.invalid && (getControl('valorTotal')?.touched || getControl('valorTotal')?.dirty)" class="error-text">Valor total é obrigatório e deve ser >= 0.</div>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600">Município de Prestação</label>
+              <input class="input" [ngClass]="{'input-invalid': getControl('municipioPrestacao')?.invalid && (getControl('municipioPrestacao')?.touched || getControl('municipioPrestacao')?.dirty)}" formControlName="municipioPrestacao" />
+              <div *ngIf="getControl('municipioPrestacao')?.invalid && (getControl('municipioPrestacao')?.touched || getControl('municipioPrestacao')?.dirty)" class="error-text">Município de prestação é obrigatório.</div>
+            </div>
+          </div>
+
+            <div class="mt-2">
+            <h4 class="font-medium">Tomador</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2" formGroupName="tomador">
+              <div>
+                <label class="block text-sm text-gray-600">Nome</label>
+                <input class="input" [ngClass]="{'input-invalid': getControl('tomador.nome')?.invalid && (getControl('tomador.nome')?.touched || getControl('tomador.nome')?.dirty)}" formControlName="nome" />
+                <div *ngIf="getControl('tomador.nome')?.invalid && (getControl('tomador.nome')?.touched || getControl('tomador.nome')?.dirty)" class="error-text">Nome do tomador é obrigatório.</div>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600">CPF/CNPJ</label>
+                <input class="input" [ngClass]="{'input-invalid': getControl('tomador.cpfCnpj')?.invalid && (getControl('tomador.cpfCnpj')?.touched || getControl('tomador.cpfCnpj')?.dirty)}" formControlName="cpfCnpj" />
+                <div *ngIf="getControl('tomador.cpfCnpj')?.invalid && (getControl('tomador.cpfCnpj')?.touched || getControl('tomador.cpfCnpj')?.dirty)" class="error-text">CPF/CNPJ é obrigatório.</div>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600">Email</label>
+                <input class="input" [ngClass]="{'input-invalid': getControl('tomador.email')?.invalid && (getControl('tomador.email')?.touched || getControl('tomador.email')?.dirty)}" type="email" formControlName="email" />
+                <div *ngIf="getControl('tomador.email')?.invalid && (getControl('tomador.email')?.touched || getControl('tomador.email')?.dirty)" class="error-text">Email inválido ou obrigatório.</div>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600">Tipo Tomador</label>
+                <input class="input" [ngClass]="{'input-invalid': getControl('tomador.tipoTomador')?.invalid && (getControl('tomador.tipoTomador')?.touched || getControl('tomador.tipoTomador')?.dirty)}" formControlName="tipoTomador" />
+                <div *ngIf="getControl('tomador.tipoTomador')?.invalid && (getControl('tomador.tipoTomador')?.touched || getControl('tomador.tipoTomador')?.dirty)" class="error-text">Tipo do tomador é obrigatório.</div>
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600">Endereço</label>
+                <input class="input" formControlName="endereco" />
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600">Município</label>
+                <input class="input" formControlName="municipio" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Servicos -->
+          <div class="mt-4">
+            <h4 class="font-medium">Serviços</h4>
+            <div class="space-y-3 mt-2" formArrayName="servicos">
+              <div *ngFor="let s of servicos.controls; let i = index" [formGroupName]="i" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                <div class="md:col-span-2">
+                  <label class="block text-sm text-gray-600">Descrição</label>
+                  <input class="input" [ngClass]="{'input-invalid': getServicoControl(i,'descricao')?.invalid && (getServicoControl(i,'descricao')?.touched || getServicoControl(i,'descricao')?.dirty)}" formControlName="descricao" />
+                  <div *ngIf="getServicoControl(i,'descricao')?.invalid && (getServicoControl(i,'descricao')?.touched || getServicoControl(i,'descricao')?.dirty)" class="error-text">Descrição é obrigatória.</div>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600">Quantidade</label>
+                  <input class="input" [ngClass]="{'input-invalid': getServicoControl(i,'quantidade')?.invalid && (getServicoControl(i,'quantidade')?.touched || getServicoControl(i,'quantidade')?.dirty)}" type="number" formControlName="quantidade" />
+                  <div *ngIf="getServicoControl(i,'quantidade')?.invalid && (getServicoControl(i,'quantidade')?.touched || getServicoControl(i,'quantidade')?.dirty)" class="error-text">Quantidade inválida (>= 0).</div>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600">Valor Unitário</label>
+                  <input class="input" [ngClass]="{'input-invalid': getServicoControl(i,'valorUnitario')?.invalid && (getServicoControl(i,'valorUnitario')?.touched || getServicoControl(i,'valorUnitario')?.dirty)}" type="number" step="0.01" formControlName="valorUnitario" />
+                  <div *ngIf="getServicoControl(i,'valorUnitario')?.invalid && (getServicoControl(i,'valorUnitario')?.touched || getServicoControl(i,'valorUnitario')?.dirty)" class="error-text">Valor unitário inválido (>= 0).</div>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600">Alíquota ISS</label>
+                  <input class="input" [ngClass]="{'input-invalid': getServicoControl(i,'aliquotaIss')?.invalid && (getServicoControl(i,'aliquotaIss')?.touched || getServicoControl(i,'aliquotaIss')?.dirty)}" type="number" step="0.01" formControlName="aliquotaIss" />
+                  <div *ngIf="getServicoControl(i,'aliquotaIss')?.invalid && (getServicoControl(i,'aliquotaIss')?.touched || getServicoControl(i,'aliquotaIss')?.dirty)" class="error-text">Alíquota inválida (>= 0).</div>
+                </div>
+                <div class="flex space-x-2">
+                  <button type="button" class="btn btn-danger" (click)="removeServico(i)">Remover</button>
+                </div>
+              </div>
+
+              <div>
+                <button type="button" class="btn btn-secondary" (click)="addServico()">+ Adicionar Serviço</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex space-x-3 mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="invoiceForm.invalid">Criar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancelar</button>
+          </div>
+          
+          <!-- Debug: show form validity and basic errors -->
+          <div class="mt-2 text-sm text-gray-600">
+            <div>Form valid: {{ invoiceForm.valid }}</div>
+            <div>Form status: {{ invoiceForm.status }}</div>
+            <div *ngIf="invoiceForm?.invalid">
+              <p class="text-red-600">Campos inválidos:</p>
+              <ul>
+                <li *ngIf="invoiceForm.get('numeroNota')?.invalid">Número da nota inválido</li>
+                <li *ngIf="invoiceForm.get('dataEmissao')?.invalid">Data de emissão inválida</li>
+                <li *ngIf="invoiceForm.get('valorTotal')?.invalid">Valor total inválido</li>
+                <li *ngIf="invoiceForm.get('municipioPrestacao')?.invalid">Município de prestação inválido</li>
+                <li *ngIf="invoiceForm.get('tomador.nome')?.invalid">Tomador.nome inválido</li>
+                <li *ngIf="invoiceForm.get('tomador.cpfCnpj')?.invalid">Tomador.cpfCnpj inválido</li>
+                <li *ngIf="invoiceForm.get('tomador.email')?.invalid">Tomador.email inválido</li>
+                <li *ngIf="invoiceForm.get('tomador.tipoTomador')?.invalid">Tomador.tipoTomador inválido</li>
+              </ul>
+            </div>
+          </div>
+        </form>
       </div>
 
       <!-- Loading State -->
@@ -92,40 +215,35 @@ import { Invoice } from './invoice.interface';
         <div *ngFor="let invoice of invoices" class="card p-6 hover:shadow-lg transition-shadow duration-200">
           <div class="flex justify-between items-start">
             <div class="flex-1">
-              <div class="flex items-center space-x-3 mb-3">
-                <h3 class="text-lg font-semibold text-gray-900">{{ invoice.number }}</h3>
+                <div class="flex items-center space-x-3 mb-3">
+                <h3 class="text-lg font-semibold text-gray-900">{{ invoice.numeroNota }}</h3>
                 <span [class]="getStatusClass(invoice.status)" class="status-badge">
                   {{ getStatusLabel(invoice.status) }}
                 </span>
               </div>
               
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                <div>
-                  <p class="text-gray-500">Cliente</p>
-                  <p class="font-medium text-gray-900">{{ invoice.clientName }}</p>
-                </div>
-                <div>
-                  <p class="text-gray-500">Data Emissão</p>
-                  <p class="font-medium text-gray-900">{{ formatDate(invoice.issueDate) }}</p>
-                </div>
-                <div>
-                  <p class="text-gray-500">Vencimento</p>
-                  <p class="font-medium text-gray-900">{{ formatDate(invoice.dueDate) }}</p>
-                </div>
-                <div>
-                  <p class="text-gray-500">Valor</p>
-                  <p class="font-medium text-gray-900">{{ invoice.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}</p>
-                </div>
-              </div>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                    <div>
+                      <p class="text-gray-500">Valor Total</p>
+                      <p class="font-medium text-gray-900">{{ invoice.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt' }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Médico</p>
+                      <p class="font-medium text-gray-900">{{ invoice.medico?.nome }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Tomador</p>
+                      <p class="font-medium text-gray-900">{{ invoice.tomador?.nome }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">Email Enviado</p>
+                      <p class="font-medium text-gray-900">{{ invoice.enviadoEmail ? 'Sim' : 'Não' }}</p>
+                    </div>
+                  </div>
               
               <div class="mb-3">
-                <p class="text-gray-500 text-sm">Descrição</p>
-                <p class="text-gray-700 text-sm">{{ invoice.description }}</p>
-              </div>
-              
-              <div *ngIf="invoice.notes" class="mb-3">
-                <p class="text-gray-500 text-sm">Observações</p>
-                <p class="text-gray-700 text-sm">{{ invoice.notes }}</p>
+                <p class="text-gray-500 text-sm">Emissão</p>
+                <p class="text-gray-700 text-sm">{{ formatDate(invoice.dataEmissao) }}</p>
               </div>
 
               <div *ngIf="invoice.paymentDate" class="text-sm text-success-600">
@@ -133,18 +251,18 @@ import { Invoice } from './invoice.interface';
               </div>
             </div>
             
-            <div class="flex flex-col space-y-2 ml-6">
-              <button *ngIf="invoice.status === 'emitida'" 
+              <div class="flex flex-col space-y-2 ml-6">
+              <button *ngIf="invoice.status === 1" 
                       class="btn btn-warning text-xs px-3 py-1"
                       (click)="sendInvoice(invoice.id)">
                 📧 Enviar
               </button>
-              <button *ngIf="invoice.status === 'enviada'" 
+              <button *ngIf="invoice.status === 2" 
                       class="btn btn-success text-xs px-3 py-1"
                       (click)="markAsPaid(invoice.id)">
                 ✅ Marcar Paga
               </button>
-              <button *ngIf="invoice.status === 'vencida'" 
+              <button *ngIf="invoice.status === 4" 
                       class="btn btn-danger text-xs px-3 py-1"
                       (click)="sendInvoice(invoice.id)">
                 🔄 Reenviar
@@ -170,23 +288,90 @@ import { Invoice } from './invoice.interface';
       </div>
     </div>
   `,
-  styles: []
+  styles: [
+    `
+    .input { width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem; }
+    .input-invalid { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.06); }
+    .error-text { color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem; }
+    .card { background: #fff; border-radius: 0.5rem; }
+    form { max-width: 100%; }
+    .status-badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; }
+    `
+  ]
 })
 export class InvoicesComponent implements OnInit {
   invoices: Invoice[] = [];
   loading = true;
 
-  constructor(private invoicesService: InvoicesService) { }
+  showForm = false;
+  invoiceForm!: FormGroup;
+  readonly MEDICO_ID = '5A754E33-F590-45CD-A8E5-707648CD49CF';
+
+  constructor(private invoicesService: InvoicesService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.loadInvoices();
+    this.initForm();
+  }
+
+  initForm(): void {
+    this.invoiceForm = this.fb.group({
+      numeroNota: ['', Validators.required],
+      dataEmissao: ['', Validators.required],
+      valorTotal: [0, [Validators.required, Validators.min(0)]],
+      municipioPrestacao: ['', Validators.required],
+      tomador: this.fb.group({
+        nome: ['', Validators.required],
+        cpfCnpj: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        tipoTomador: ['', Validators.required],
+        endereco: [''],
+        municipio: ['']
+      })
+      ,
+      servicos: this.fb.array([
+        this.createServicoGroup()
+      ])
+    });
+  }
+
+  createServicoGroup(): FormGroup {
+    return this.fb.group({
+      descricao: ['', Validators.required],
+      quantidade: [0, [Validators.required, Validators.min(0)]],
+      valorUnitario: [0, [Validators.required, Validators.min(0)]],
+      aliquotaIss: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  get servicos(): FormArray {
+    return this.invoiceForm.get('servicos') as FormArray;
+  }
+
+  addServico(): void {
+    this.servicos.push(this.createServicoGroup());
+  }
+
+  removeServico(index: number): void {
+    if (this.servicos.length > 1) this.servicos.removeAt(index);
+  }
+
+  getControl(name: string) {
+    return this.invoiceForm.get(name);
+  }
+
+  getServicoControl(index: number, name: string) {
+    const grp = this.servicos.at(index) as FormGroup;
+    return grp ? grp.get(name) : null;
   }
 
   loadInvoices(): void {
     this.loading = true;
     this.invoicesService.getInvoices().subscribe({
       next: (response) => {
-        this.invoices = response.invoices;
+        console.log('Notas fiscais carregadas:', response);
+        // backend returns an array of invoices
+        this.invoices = Array.isArray(response) ? response : (response as any).invoices ?? [];
         this.loading = false;
       },
       error: (error) => {
@@ -196,38 +381,144 @@ export class InvoicesComponent implements OnInit {
     });
   }
 
-  getStatusCount(status: Invoice['status']): number {
-    return this.invoices.filter(invoice => invoice.status === status).length;
+  openForm(): void {
+    this.showForm = true;
+  }
+
+  closeForm(): void {
+    this.showForm = false;
+    this.initForm();
+  }
+
+  createInvoice(): void {
+    if (!this.invoiceForm || this.invoiceForm.invalid) {
+      this.invoiceForm.markAllAsTouched();
+      return;
+    }
+
+    const raw = this.invoiceForm.value;
+    let dataEmissaoIso = raw.dataEmissao;
+    try {
+      const d = new Date(raw.dataEmissao);
+      if (!isNaN(d.getTime())) dataEmissaoIso = d.toISOString();
+    } catch (e) {
+      // keep raw
+    }
+
+    const payload: any = {
+      numeroNota: raw.numeroNota,
+      dataEmissao: dataEmissaoIso,
+      valorTotal: Number(raw.valorTotal) || 0,
+      municipioPrestacao: raw.municipioPrestacao,
+      medicoId: this.MEDICO_ID,
+      tomador: {
+        nome: raw.tomador.nome,
+        cpfCnpj: raw.tomador.cpfCnpj,
+        email: raw.tomador.email,
+        tipoTomador: raw.tomador.tipoTomador,
+        endereco: raw.tomador.endereco,
+        municipio: raw.tomador.municipio
+      }
+    };
+    // include servicos
+    if (raw.servicos && Array.isArray(raw.servicos)) {
+      payload.servicos = raw.servicos.map((s: any) => ({
+        descricao: s.descricao,
+        quantidade: Number(s.quantidade) || 0,
+        valorUnitario: Number(s.valorUnitario) || 0,
+        aliquotaIss: Number(s.aliquotaIss) || 0
+      }));
+    } else {
+      payload.servicos = [];
+    }
+
+    this.invoicesService.generateInvoice(payload).subscribe({
+      next: (created) => {
+        this.invoices.unshift(created as Invoice);
+        this.closeForm();
+      },
+      error: (err) => {
+        console.error('Erro ao criar nota fiscal:', err);
+      }
+    });
+  }
+
+  private mapStatusNameToCode(name: string | number): number | undefined {
+    if (typeof name === 'number') return name;
+    const lower = (name || '').toString().toLowerCase();
+    if (lower === 'emitida') return 1;
+    if (lower === 'enviada') return 2;
+    if (lower === 'paga') return 3;
+    if (lower === 'vencida') return 4;
+    return undefined;
+  }
+
+  getStatusCount(status: Invoice['status'] | number | string): number {
+    const code = this.mapStatusNameToCode(status as any);
+    if (typeof code === 'number') {
+      return this.invoices.filter(invoice => invoice.status === code).length;
+    }
+    // fallback: strict equality (handles unexpected values)
+    return this.invoices.filter(invoice => invoice.status === status as any).length;
   }
 
   getTotalPaidValue(): number {
+    // Sum valorTotal for invoices marked as paid (assuming status code 3 means 'paga')
     return this.invoices
-      .filter(invoice => invoice.status === 'paga')
-      .reduce((total, invoice) => total + invoice.amount, 0);
+      .filter(invoice => invoice.status === 3)
+      .reduce((total, invoice) => total + (invoice.valorTotal ?? 0), 0);
   }
 
-  getStatusClass(status: Invoice['status']): string {
-    switch (status) {
-      case 'emitida': return 'status-emitida';
-      case 'enviada': return 'status-enviada';
-      case 'paga': return 'status-paga';
-      case 'vencida': return 'status-vencida';
-      default: return '';
+  getStatusClass(status: Invoice['status'] | number | string): string {
+    // Map numeric status codes to classes
+    if (status === 1 || status === 'emitida') return 'status-emitida';
+    if (status === 2 || status === 'enviada') return 'status-enviada';
+    if (status === 3 || status === 'paga') return 'status-paga';
+    if (status === 4 || status === 'vencida') return 'status-vencida';
+    return '';
+  }
+
+  getStatusLabel(status: Invoice['status'] | number | string): string {
+    if (status === 1 || status === 'emitida') return 'Emitida';
+    if (status === 2 || status === 'enviada') return 'Enviada';
+    if (status === 3 || status === 'paga') return 'Paga';
+    if (status === 4 || status === 'vencida') return 'Vencida';
+    return String(status);
+  }
+
+  formatDate(dateString?: string): string {
+    if (!dateString) return '';
+
+    // Detect whether the input includes time information (ISO datetime or contains ':')
+    const hasTime = dateString.includes('T') || /:\d{2}/.test(dateString);
+
+    // Try to parse the value. For plain dates like 'YYYY-MM-DD' some engines treat them
+    // as UTC and can shift the day when converted to local time; we attempt a safe
+    // parse and fallback to appending 'T00:00:00' if needed.
+    let date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      // fallback: try treating as local date-only
+      date = new Date(dateString + 'T00:00:00');
     }
-  }
 
-  getStatusLabel(status: Invoice['status']): string {
-    switch (status) {
-      case 'emitida': return 'Emitida';
-      case 'enviada': return 'Enviada';
-      case 'paga': return 'Paga';
-      case 'vencida': return 'Vencida';
-      default: return status;
+    if (isNaN(date.getTime())) {
+      // if parsing still fails, return the raw string as a last resort
+      return dateString;
     }
-  }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString + 'T00:00:00');
+    if (hasTime) {
+      // Show date + time in pt-BR (24h)
+      return date.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+    }
+
+    // Date-only presentation
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -238,7 +529,8 @@ export class InvoicesComponent implements OnInit {
   sendInvoice(id: string): void {
     const invoice = this.invoices.find(inv => inv.id === id);
     if (invoice) {
-      invoice.status = 'enviada';
+      // optimistic update: mark as 'enviada' (status code 2)
+      invoice.status = 2 as any;
       // Em produção, chamar o serviço:
       // this.invoicesService.sendInvoice(id).subscribe();
     }
@@ -247,7 +539,7 @@ export class InvoicesComponent implements OnInit {
   markAsPaid(id: string): void {
     const invoice = this.invoices.find(inv => inv.id === id);
     if (invoice) {
-      invoice.status = 'paga';
+      invoice.status = 3 as any;
       invoice.paymentDate = new Date().toISOString().split('T')[0];
       // Em produção, chamar o serviço:
       // this.invoicesService.updateInvoiceStatus(id, 'paga').subscribe();

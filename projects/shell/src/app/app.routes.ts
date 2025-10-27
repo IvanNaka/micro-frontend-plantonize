@@ -43,12 +43,7 @@ import { environment } from '../environments/environment';
                   <span>💰</span>
                   <span>Financeiro</span>
                 </button>
-                <button 
-                  (click)="navigateToModule('clientes')"
-                  class="nav-link nav-link-inactive flex items-center space-x-2">
-                  <span>👥</span>
-                  <span>Clientes</span>
-                </button>
+                <!-- Clientes navigation removed (project not present) -->
               </nav>
             </div>
             
@@ -86,12 +81,7 @@ import { environment } from '../environments/environment';
               <span>💰</span>
               <span>Financeiro</span>
             </button>
-            <button 
-              (click)="navigateToModule('clientes')"
-              class="nav-link nav-link-inactive flex-1 flex items-center justify-center space-x-2">
-              <span>👥</span>
-              <span>Clientes</span>
-            </button>
+            <!-- Clientes navigation removed (mobile) -->
           </div>
         </div>
       </nav>
@@ -139,20 +129,7 @@ import { environment } from '../environments/environment';
               </div>
             </div>
 
-            <!-- Clientes Card -->
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-              <div class="text-center">
-                <div class="text-4xl mb-4">👥</div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Clientes</h3>
-                <p class="text-gray-600 mb-4">
-                  Gerencie seus pacientes e clientes
-                </p>
-                <button (click)="navigateToModule('clientes')"
-                   class="inline-block bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
-                  Acessar Clientes
-                </button>
-              </div>
-            </div>
+            <!-- Clientes card removed (project deleted) -->
           </div>
 
           <div class="mt-8 text-center">
@@ -230,13 +207,7 @@ class HomeComponent {
                   <span>💰</span>
                   <span>Financeiro</span>
                 </button>
-                <button 
-                  (click)="navigateToModule('clientes')"
-                  [class]="currentModule === 'clientes' ? 'nav-link nav-link-active border' : 'nav-link nav-link-inactive'"
-                  class="flex items-center space-x-2">
-                  <span>👥</span>
-                  <span>Clientes</span>
-                </button>
+                <!-- Clientes navigation removed (project not present) -->
               </nav>
             </div>
             
@@ -276,13 +247,7 @@ class HomeComponent {
               <span>💰</span>
               <span>Financeiro</span>
             </button>
-            <button 
-              (click)="navigateToModule('clientes')"
-              [class]="currentModule === 'clientes' ? 'nav-link nav-link-active border' : 'nav-link nav-link-inactive'"
-              class="flex-1 flex items-center justify-center space-x-2">
-              <span>👥</span>
-              <span>Clientes</span>
-            </button>
+            <!-- Clientes navigation removed (mobile) -->
           </div>
         </div>
       </nav>
@@ -311,13 +276,12 @@ class ModuleFrameComponent {
     this.route.paramMap.subscribe(params => {
       const module = params.get('module');
       this.currentModule = module || 'agenda';
-      
+
       const urls: { [key: string]: string } = {
         'agenda': environment.microfrontends.agenda.url,
-        'financeiro': environment.microfrontends.financeiro.url,
-        'clientes': environment.microfrontends.clientes.url
+        'financeiro': environment.microfrontends.financeiro.url
       };
-      
+
       this.moduleUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urls[module!] || urls['agenda']);
     });
   }

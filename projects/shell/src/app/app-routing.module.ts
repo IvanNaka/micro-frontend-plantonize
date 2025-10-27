@@ -22,15 +22,6 @@ const routes: Routes = [
         exposedModule: './Module',
       }).then((m) => m.FinanceiroModule),
   },
-  {
-    path: 'clientes',
-    loadChildren: () =>
-      loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'https://master.d15fxxqhaij1k9.amplifyapp.com/remoteEntry.js',
-        exposedModule: './Module',
-      }).then((m) => m.ClientesModule),
-  },
 ];
 
 @NgModule({

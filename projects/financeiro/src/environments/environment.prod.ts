@@ -13,10 +13,6 @@ export const environment = {
       url: 'https://financeiro.plantonize.com',
       port: 443
     },
-    clientes: {
-      url: 'https://clientes.plantonize.com',
-      port: 443
-    }
   },
   api: {
     baseUrl: 'https://api.plantonize.com/api',

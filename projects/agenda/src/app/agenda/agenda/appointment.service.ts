@@ -1,82 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { Appointment, AppointmentResponse } from './appointment.interface';
+import { Observable } from 'rxjs';
+import { Atendimento, Plantao } from './appointment.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentsService {
-  private apiUrl = 'https://api.plantonize.test/appointments';
+  // Explicit Atendimento endpoint (user requested this exact URL)
+  private atendimentoUrl = 'http://localhost:3000/api/plantoes';
 
   constructor(private http: HttpClient) { }
 
-  getAppointments(): Observable<AppointmentResponse> {
-    // Em produção, usar: return this.http.get<AppointmentResponse>(this.apiUrl);
-    
-    // Mock data para desenvolvimento
-    const mockAppointments: Appointment[] = [
-      {
-        id: '1',
-        date: '2025-09-15',
-        time: '08:00',
-        hospital: 'Hospital São Lucas',
-        specialty: 'Cardiologia',
-        doctor: 'Dr. Silva',
-        value: 800.00,
-        status: 'confirmado',
-        notes: 'Plantão de emergência'
-      },
-      {
-        id: '2',
-        date: '2025-09-16',
-        time: '20:00',
-        hospital: 'Clínica Coração',
-        specialty: 'Cardiologia',
-        doctor: 'Dr. Silva',
-        value: 600.00,
-        status: 'pendente',
-        notes: 'Plantão noturno'
-      },
-      {
-        id: '3',
-        date: '2025-09-18',
-        time: '14:00',
-        hospital: 'Hospital Central',
-        specialty: 'Cardiologia',
-        doctor: 'Dr. Silva',
-        value: 750.00,
-        status: 'confirmado'
-      },
-      {
-        id: '4',
-        date: '2025-09-20',
-        time: '09:00',
-        hospital: 'Hospital São Lucas',
-        specialty: 'Cardiologia',
-        doctor: 'Dr. Silva',
-        value: 800.00,
-        status: 'cancelado',
-        notes: 'Cancelado pelo hospital'
-      }
-    ];
-
-    const response: AppointmentResponse = {
-      appointments: mockAppointments,
-      total: mockAppointments.length,
-      page: 1,
-      totalPages: 1
-    };
-
-    return of(response).pipe(delay(1000)); // Simula latência da API
+  /** GET list of Atendimentos (returns Plantao[] payload) */
+  getAtendimentos(): Observable<Plantao[]> {
+    return this.http.get<Plantao[]>(this.atendimentoUrl);
   }
 
-  getAppointmentById(id: string): Observable<Appointment> {
-    return this.http.get<Appointment>(`${this.apiUrl}/${id}`);
+  /** GET single Atendimento by id */
+  getAtendimentoById(id: string): Observable<Atendimento> {
+    return this.http.get<Atendimento>(`${this.atendimentoUrl}/${id}`);
   }
 
-  updateAppointmentStatus(id: string, status: Appointment['status']): Observable<Appointment> {
-    return this.http.patch<Appointment>(`${this.apiUrl}/${id}`, { status });
+  /** Create new Atendimento (POST) - payload follows Plantao shape */
+  createAtendimento(payload: Partial<Plantao>): Observable<Plantao> {
+    return this.http.post<Plantao>(this.atendimentoUrl, payload);
+  }
+
+  /** Update Atendimento status via PATCH */
+  updateAtendimentoStatus(id: string, status: string): Observable<Atendimento> {
+    return this.http.patch<Atendimento>(`${this.atendimentoUrl}/${id}`, { status });
   }
 }

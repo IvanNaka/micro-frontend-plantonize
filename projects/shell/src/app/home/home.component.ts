@@ -47,20 +47,7 @@ import { CommonModule } from '@angular/common';
           </div>
         </div>
 
-        <!-- Clientes Card -->
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-          <div class="text-center">
-            <div class="text-4xl mb-4">👥</div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Clientes</h3>
-            <p class="text-gray-600 mb-4">
-              Gerencie seus pacientes e clientes
-            </p>
-            <a href="https://master.d15fxxqhaij1k9.amplifyapp.com" target="_blank"
-               class="inline-block bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition-colors">
-              Acessar Clientes
-            </a>
-          </div>
-        </div>
+        <!-- Clientes removed: project deleted from workspace -->
       </div>
 
       <div class="mt-8 text-center">

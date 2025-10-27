@@ -7,16 +7,14 @@
     "build": "ng build",
     "build:agenda": "ng build agenda --configuration production",
     "build:shell": "ng build shell --configuration production",
-    "build:financeiro": "ng build financeiro --configuration production",
-    "build:clientes": "ng build clientes --configuration production",
-    "build:all": "npm run build:shell && npm run build:agenda && npm run build:financeiro && npm run build:clientes",
+  "build:financeiro": "ng build financeiro --configuration production",
+  "build:all": "npm run build:shell && npm run build:agenda && npm run build:financeiro",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:shell": "node dist/shell/server/server.mjs",
     "serve:ssr:agenda": "node dist/agenda/server/server.mjs",
-    "serve:ssr:financeiro": "node dist/financeiro/server/server.mjs",
-    "serve:ssr:clientes": "node dist/clientes/server/server.mjs",
-    "start:all": "concurrently \"ng serve shell -o\" \"ng serve agenda\" \"ng serve financeiro\" \"ng serve clientes\""
+  "serve:ssr:financeiro": "node dist/financeiro/server/server.mjs",
+  "start:all": "concurrently \"ng serve shell -o\" \"ng serve agenda\" \"ng serve financeiro\""
   },
   "private": true,
   "dependencies": {

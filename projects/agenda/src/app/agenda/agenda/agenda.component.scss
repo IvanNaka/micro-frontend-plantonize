@@ -1,0 +1,82 @@
+/* Styles specific to Agenda component - create form and listing */
+
+:host {
+	display: block;
+	color: #1f2937; /* gray-800 */
+}
+
+.card {
+	background: #ffffff;
+	border: 1px solid #e6e9ee;
+	border-radius: 10px;
+	box-shadow: 0 1px 3px rgba(16,24,40,0.06);
+}
+
+.agenda-create-form {
+	padding: 1.25rem;
+}
+
+.agenda-form-grid {
+	display: grid;
+	grid-template-columns: repeat(1,1fr);
+	gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+	.agenda-form-grid {
+		grid-template-columns: repeat(3,1fr);
+	}
+	.agenda-form-grid .md\:col-span-3 {
+		grid-column: 1 / -1;
+	}
+}
+
+.input, textarea.input {
+	display: block;
+	width: 100%;
+	background: #fff;
+	border: 1px solid #cbd5e1; /* slate-300 */
+	padding: 0.5rem 0.75rem;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	color: #111827;
+}
+
+textarea.input { min-height: 3.5rem; resize: vertical; }
+
+.form-label { display:block; font-size:0.85rem; color:#6b7280; margin-bottom:0.35rem; }
+
+.actions { margin-top: 0.75rem; display:flex; align-items:center; gap:0.75rem; }
+
+.btn {
+	display:inline-flex; align-items:center; justify-content:center;
+	padding: 0.45rem 0.8rem; border-radius:8px; border: none; cursor:pointer;
+	background: #f3f4f6; color:#111827; font-weight:600;
+}
+.btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary { background: #2563eb; color: white; }
+.btn-success { background: #10b981; color: white; }
+.btn-danger { background: #ef4444; color: white; }
+
+.status-badge {
+	padding: 0.25rem 0.5rem; border-radius: 999px; font-weight:600; font-size:0.75rem;
+	display:inline-block; text-transform:capitalize;
+}
+.status-confirmado { background:#ecfdf5; color:#065f46; }
+.status-pendente { background:#fff7ed; color:#92400e; }
+.status-cancelado { background:#fee2e2; color:#991b1b; }
+
+.card-list { display:grid; gap:0.75rem; }
+
+.card-list .card { padding: 1rem; transition: box-shadow .15s ease; }
+.card-list .card:hover { box-shadow: 0 6px 18px rgba(16,24,40,0.08); transform: translateY(-2px); }
+
+.meta { font-size:0.85rem; color:#6b7280; }
+.meta-value { font-weight:600; color:#111827; }
+
+.empty-state { text-align:center; color:#6b7280; }
+
+/* small helper for compact stats */
+.small { font-size:0.85rem; }
+

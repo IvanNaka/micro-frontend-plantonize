@@ -19,13 +19,9 @@ export const MICROFRONTEND_CONFIG = {
     financeiro: {
       url: 'https://master.d3a2j644iqswfl.amplifyapp.com',
       port: 4202
-    },
-    clientes: {
-      url: 'https://master.d15fxxqhaij1k9.amplifyapp.com',
-      port: 4203
     }
   },
-  
+
   production: {
     shell: {
       url: 'https://master.d2kuxr0jk1zwy.amplifyapp.com/',
@@ -37,10 +33,6 @@ export const MICROFRONTEND_CONFIG = {
     },
     financeiro: {
       url: 'https://master.d3a2j644iqswfl.amplifyapp.com',
-      port: 443
-    },
-    clientes: {
-      url: 'https://master.d15fxxqhaij1k9.amplifyapp.com',
       port: 443
     }
   },
@@ -58,10 +50,6 @@ export const MICROFRONTEND_CONFIG = {
     financeiro: {
       url: 'http://localhost:3002',
       port: 3002
-    },
-    clientes: {
-      url: 'http://localhost:3003',
-      port: 3003
     }
   }
 };
