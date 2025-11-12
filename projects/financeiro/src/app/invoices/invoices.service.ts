@@ -9,14 +9,14 @@ import { environment } from '../../environments/environment';
 })
 export class InvoicesService {
   private base = environment.api.baseUrl;
-  // private base = environment.api?.baseUrl ?? 'http://localhost:5113/api';
   private path = environment.api?.endpoints?.invoices ?? '/notasfiscais';
 
   constructor(private http: HttpClient) { }
 
   getInvoices(): Observable<InvoiceResponse> {
-    console.log('Using Invoices API URL:', `${this.base}${this.path}`);
+
     const url = `${this.base}${this.path}`;
+    console.log('Using Invoices API URL:', `${url}`);
     return this.http.get<InvoiceResponse>(url);
   }
 

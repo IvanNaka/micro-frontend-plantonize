@@ -1,15 +1,17 @@
 import { initNodeFederation } from '@softarc/native-federation-node';
+import { environment } from './src/environments/environment';
 
 console.log('Starting SSR for Shell');
 
 (async () => {
 
+  const remotes = {
+    'agenda': `${environment.microfrontends.agenda.url}remoteEntry.json`,
+    'financeiro': `${environment.microfrontends.financeiro.url}remoteEntry.json`
+  };
+
   await initNodeFederation({
-    remotesOrManifestUrl: {
-  'agenda': 'https://master.d38x975wk8l8lt.amplifyapp.com/remoteEntry.json',
-  'financeiro': 'https://master.d3a2j644iqswfl.amplifyapp.com/remoteEntry.json',
-  'clientes': 'https://master.d15fxxqhaij1k9.amplifyapp.com/remoteEntry.json'
-},
+    remotesOrManifestUrl: remotes,
     relBundlePath: '../browser/',
   });
   

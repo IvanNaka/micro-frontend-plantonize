@@ -1,3 +1,19 @@
+<!-- Global header with auth controls -->
+<div class="global-auth-bar" style="position:fixed;top:8px;right:12px;z-index:50">
+		<ng-container *ngIf="isAuthenticated; else loggedOut">
+			<span style="margin-right:8px">{{ userName }}</span>
+			<button (click)="logout()" [disabled]="isLoading" class="px-3 py-1 rounded bg-gray-200">
+				<span *ngIf="!isLoading">Logout</span>
+				<span *ngIf="isLoading">Login</span>
+			</button>
+		</ng-container>
+		<ng-template #loggedOut>
+			<button (click)="login()" class="px-3 py-1 rounded bg-blue-500 text-white">
+				<span *ngIf="!isLoading">Login</span>
+			</button>
+		</ng-template>
+</div>
+
 <!-- Router Outlet for different pages -->
 <router-outlet></router-outlet>
 

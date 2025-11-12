@@ -22,8 +22,24 @@
             "scripts": []
           },
           "configurations": {
-            "production": { "optimization": true },
-            "development": { "sourceMap": true }
+            "production": { 
+              "optimization": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/shell/src/environments/environment.ts",
+                  "with": "projects/shell/src/environments/environment.production.ts"
+                }
+              ]
+            },
+            "development": { 
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/shell/src/environments/environment.ts",
+                  "with": "projects/shell/src/environments/environment.development.ts"
+                }
+              ]
+            }
           },
           "defaultConfiguration": "development"
         },

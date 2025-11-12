@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/module-federation';
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   { path: '', redirectTo: 'agenda', pathMatch: 'full' },
@@ -9,7 +10,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'https://master.d38x975wk8l8lt.amplifyapp.com/remoteEntry.js',
+        remoteEntry: `${environment.microfrontends.agenda.url}remoteEntry.js`,
         exposedModule: './Module',
       }).then((m) => m.AgendaModule), // O nome do módulo exportado
   },
@@ -18,7 +19,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'https://master.d3a2j644iqswfl.amplifyapp.com/remoteEntry.js',
+        remoteEntry: `${environment.microfrontends.financeiro.url}remoteEntry.js`,
         exposedModule: './Module',
       }).then((m) => m.FinanceiroModule),
   },

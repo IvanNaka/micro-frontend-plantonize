@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../core/auth.service';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -25,14 +28,19 @@ import { CommonModule } from '@angular/common';
             <p class="text-gray-600 mb-4">
               Gerencie seus plantões e consultas médicas
             </p>
-            <a href="https://master.d38x975wk8l8lt.amplifyapp.com" target="_blank" 
-               class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
-              Acessar Agenda
-            </a>
+            <ng-container *ngIf="isAuthenticated; else agendaLocked">
+              <button (click)="openAgenda()" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+                Acessar Agenda
+              </button>
+            </ng-container>
+            <ng-template #agendaLocked>
+              <button class="inline-block bg-blue-200 text-white px-4 py-2 rounded cursor-not-allowed" disabled title="Faça login para acessar">
+                Faça login para acessar
+              </button>
+            </ng-template>
           </div>
-        </div>
-
-        <!-- Financeiro Card -->
+  </div>
+  <!-- Financeiro Card -->
         <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
           <div class="text-center">
             <div class="text-4xl mb-4">💰</div>
@@ -40,27 +48,38 @@ import { CommonModule } from '@angular/common';
             <p class="text-gray-600 mb-4">
               Controle suas finanças e faturamento
             </p>
-            <a href="https://master.d3a2j644iqswfl.amplifyapp.com" target="_blank"
-               class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
-              Acessar Financeiro
-            </a>
+            <ng-container *ngIf="isAuthenticated; else financeiroLocked">
+              <button (click)="openFinanceiro()" class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+                Acessar Financeiro
+              </button>
+            </ng-container>
+            <ng-template #financeiroLocked>
+              <button class="inline-block bg-green-200 text-white px-4 py-2 rounded cursor-not-allowed" disabled title="Faça login para acessar">
+                Faça login para acessar
+              </button>
+            </ng-template>
           </div>
         </div>
 
-        <!-- Clientes removed: project deleted from workspace -->
-      </div>
-
-      <div class="mt-8 text-center">
-        <div class="bg-gray-100 rounded-lg p-4">
-          <h4 class="font-semibold text-gray-900 mb-2">Arquitetura de Micro Frontends</h4>
-          <p class="text-sm text-gray-600">
-            Shell (4200) + Agenda MFE (4201) + Financeiro MFE (4202) + Clientes MFE (4203)
-          </p>
-        </div>
       </div>
     </div>
   `,
   styles: []
 })
 export class HomeComponent {
+  env = environment;
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  openAgenda(): void {
+    this.router.navigate(['/agenda']);
+  }
+
+  openFinanceiro(): void {
+    this.router.navigate(['/financeiro']);
+  }
+
+  get isAuthenticated(): boolean {
+    return this.authService.isLoggedIn();
+  }
 }

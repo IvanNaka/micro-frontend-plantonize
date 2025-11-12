@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,30 @@ export class AppComponent {
   isLoading = false;
   showWelcome = true;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private auth: AuthService) {
     // Don't show welcome screen since we redirect to agenda
     this.showWelcome = false;
+  }
+
+  get isAuthenticated(): boolean {
+    return this.auth.isLoggedIn();
+  }
+
+  get userName(): string | null {
+    return this.auth.getAccountName();
+  }
+
+  login(): void {
+    // Trigger redirect-based login. Do not await because this will navigate away.
+    this.isLoading = true;
+    console.debug('AppComponent: login() called, invoking AuthService.login()');
+    this.auth.login();
+  }
+
+  logout(): void {
+    // Trigger redirect-based logout. Do not await because this will navigate away.
+    this.isLoading = true;
+    this.auth.logout();
   }
 
   navigateToModule(module: string): void {
