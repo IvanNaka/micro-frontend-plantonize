@@ -18,11 +18,11 @@ export const environment = {
     },
   },
   api: {
-    // baseUrl: 'http://localhost:3000/api',
-    baseUrl: 'plantonize-bff-d4e4bvawhyf3a2bg.brazilsouth-01.azurewebsites.net/api',
+    baseUrl: 'http://localhost:3000/api',
+    // baseUrl: 'https://plantonize-bff-d4e4bvawhyf3a2bg.brazilsouth-01.azurewebsites.net/api',
     timeout: 30000,
     endpoints: {
-      invoices: '/notasfiscais',
+      invoices: '/notas',
       payments: '/payments',
       reports: '/reports',
       transactions: '/transactions'

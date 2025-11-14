@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class InvoicesService {
   private base = environment.api.baseUrl;
-  private path = environment.api?.endpoints?.invoices ?? '/notasfiscais';
+  private path = environment.api?.endpoints?.invoices ?? '/notas';
 
   constructor(private http: HttpClient) { }
 

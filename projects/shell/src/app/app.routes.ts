@@ -67,9 +67,6 @@ import { CommonModule } from '@angular/common';
             </div>
             
             <div class="flex items-center space-x-4">
-              <div class="text-sm text-gray-500">
-                Shell App - Porta 4200
-              </div>
               <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                 <span class="text-sm font-medium text-gray-600">👨‍⚕️</span>
               </div>
